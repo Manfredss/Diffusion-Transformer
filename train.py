@@ -32,7 +32,11 @@ except:
 # setup training
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 criterion = nn.L1Loss()
+<<<<<<< HEAD
 EPOCH = 500
+=======
+EPOCH = 1000
+>>>>>>> c243c90d14375dfc56d8836243aa4e7526d50675
 batch_size = 300
 progress = tqdm(total=EPOCH)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
