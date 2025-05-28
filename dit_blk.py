@@ -54,9 +54,9 @@ class DiTBlock(nn.Module):
         q = q.view(q.size(0), q.size(1), self.headNum, self.embSize).permute(0, 2, 1, 3)
         k = k.view(k.size(0), k.size(1), self.headNum, self.embSize).permute(0, 2, 3, 1)
         v = v.view(v.size(0), v.size(1), self.headNum, self.embSize).permute(0, 2, 1, 3)
-        attn = torch.matmul(q, k) / math.sqrt(q.size(2))
+        attn = q @ k / math.sqrt(q.size(2))
         attn = torch.softmax(attn, dim=-1)
-        y = torch.matmul(attn, v)
+        y = attn @ v
         y = y.permute(0, 2, 1, 3)
         y = y.reshape(y.size(0), y.size(1), y.size(2) * y.size(3))
         y = self.lv(y)

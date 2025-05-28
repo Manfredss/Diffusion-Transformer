@@ -8,14 +8,14 @@ class TimeEmbedding(nn.Module):
     def __init__(self, embSize: int):
         super().__init__()
         self.halfDim = embSize // 2
-        halfEmb = torch.exp(torch.arange(self.halfDim, dtype=torch.float32) * (-math.log(10000) / self.halfDim - 1))
+        halfEmb = torch.exp(torch.arange(self.halfDim) * (-math.log(10000) / (self.halfDim - 1)))
         self.register_buffer('halfEmb', halfEmb)
 
     def forward(self, x):
         x = x.view(x.size(0), 1)
         halfEmb = self.halfEmb.unsqueeze(0).expand(x.size(0), self.halfDim)
         halfEmbX = halfEmb * x
-        embX = torch.cat((torch.sin(halfEmbX), torch.cos(halfEmbX)), dim=-1)
+        embX = torch.cat((halfEmbX.sin(), halfEmbX.cos()), dim=-1)
         return embX
     
 

@@ -5,14 +5,14 @@ from matplotlib import pyplot as plt
 
 
 betas = torch.linspace(1e-4, 0.02, T)
-aplhas = 1 - betas
-alphas_cumprod = torch.cumprod(aplhas, dim=-1)
+alphas = 1 - betas
+alphas_cumprod = torch.cumprod(alphas, dim=-1)
 alphas_cumprod_prev = torch.cat((torch.tensor([1.0]), alphas_cumprod[:-1]), dim=-1)
 variance = betas * (1 - alphas_cumprod_prev) / (1 - alphas_cumprod)  # denoise
 
 # forward add noise
 def forward_add_noise(x, t):
-    noise = torch.rand_like(x)  # add noise to each image at time t
+    noise = torch.randn_like(x)  # add noise to each image at time t
     batch_alpha_cumprod = alphas_cumprod[t].view(x.size(0), 1, 1, 1)
     # based on formula, generate noised image at timestep tdirectly
     x = torch.sqrt(batch_alpha_cumprod) * x + torch.sqrt(1 - batch_alpha_cumprod) * noise
